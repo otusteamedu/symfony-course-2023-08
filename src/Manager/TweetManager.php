@@ -23,4 +23,15 @@ class TweetManager
         $this->entityManager->persist($tweet);
         $this->entityManager->flush();
     }
+
+    /**
+     * @return Tweet[]
+     */
+    public function getTweets(int $page, int $perPage): array
+    {
+        /** @var TweetRepository $TweetRepository */
+        $tweetRepository = $this->entityManager->getRepository(Tweet::class);
+
+        return $tweetRepository->getTweets($page, $perPage);
+    }
 }
