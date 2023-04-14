@@ -8,6 +8,7 @@ use App\Service\AsyncService;
 use App\Service\SubscriptionService;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
+use JsonException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,6 +22,9 @@ class Controller extends AbstractFOSRestController
     {
     }
 
+    /**
+     * @throws JsonException
+     */
     #[Route(path: '/api/v1/add-followers', methods: ['POST'])]
     #[RequestParam(name: 'userId', requirements: '\d+')]
     #[RequestParam(name: 'followersLogin')]
@@ -34,8 +38,8 @@ class Controller extends AbstractFOSRestController
                 $createdFollowers = $this->subscriptionService->addFollowers($user, $followersLogin, $count);
                 $view = $this->view(['created' => $createdFollowers], 200);
             } else {
-                $message = (new AddFollowersDTO($userId, $followersLogin, $count))->toAMQPMessage();
-                $result = $this->asyncService->publishToExchange(AsyncService::ADD_FOLLOWER, $message);
+                $message = $this->subscriptionService->getFollowersMessages($user, $followersLogin, $count);
+                $result = $this->asyncService->publishMultipleToExchange(AsyncService::ADD_FOLLOWER, $message);
                 $view = $this->view(['success' => $result], $result ? 200 : 500);
             }
         } else {
@@ -44,5 +48,4 @@ class Controller extends AbstractFOSRestController
 
         return $this->handleView($view);
     }
-
 }
