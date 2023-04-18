@@ -2,6 +2,7 @@
 
 namespace App\Consumer\UpdateFeed;
 
+use App\Client\StatsdAPIClient;
 use App\Consumer\UpdateFeed\Input\Message;
 use App\DTO\SendNotificationDTO;
 use App\Entity\Tweet;
@@ -21,6 +22,8 @@ class Consumer implements ConsumerInterface
         private readonly ValidatorInterface $validator,
         private readonly FeedService $feedService,
         private readonly AsyncService $asyncService,
+        private readonly StatsdAPIClient $statsdAPIClient,
+        private readonly string $key,
     )
     {
     }
@@ -56,6 +59,7 @@ class Consumer implements ConsumerInterface
             );
         }
 
+        $this->statsdAPIClient->increment($this->key);
         $this->entityManager->clear();
         $this->entityManager->getConnection()->close();
 
