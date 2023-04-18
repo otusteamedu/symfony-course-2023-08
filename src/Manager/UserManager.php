@@ -216,6 +216,10 @@ class UserManager
         $user->setPassword($this->userPasswordHasher->hashPassword($user, $manageUserDTO->password));
         $user->setAge($manageUserDTO->age);
         $user->setIsActive($manageUserDTO->isActive);
+        $user->setRoles($manageUserDTO->roles);
+        $user->setPhone($manageUserDTO->phone);
+        $user->setEmail($manageUserDTO->email);
+        $user->setPreferred($manageUserDTO->preferred);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 

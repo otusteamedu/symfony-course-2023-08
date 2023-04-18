@@ -7,6 +7,7 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\ArrayShape;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JsonException;
 
 #[ORM\Table(name: 'tweet')]
 #[ORM\Index(columns: ['author_id'], name: 'tweet__author_id__ind')]
@@ -89,5 +90,23 @@ class Tweet
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
         ];
+    }
+
+    public function toFeed(): array
+    {
+        return [
+            'id' => $this->id,
+            'author' => $this->getAuthor()->getLogin(),
+            'text' => $this->text,
+            'createdAt' => $this->createdAt->format('Y-m-d h:i:s'),
+        ];
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function toAMPQMessage(): string
+    {
+        return json_encode(['tweetId' => $this->id], JSON_THROW_ON_ERROR);
     }
 }

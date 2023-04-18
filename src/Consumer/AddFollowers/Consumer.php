@@ -35,10 +35,6 @@ class Consumer implements ConsumerInterface
             return $this->reject($e->getMessage());
         }
 
-        if ($message->getFollowerLogin() === 'multi_follower_error #11') {
-            throw new Exception('Planned error');
-        }
-
         try {
             $userRepository = $this->entityManager->getRepository(User::class);
             $user = $userRepository->find($message->getUserId());
@@ -47,7 +43,6 @@ class Consumer implements ConsumerInterface
             }
 
             $this->subscriptionService->addFollowers($user, $message->getFollowerLogin(), $message->getCount());
-            sleep(1);
         } catch (Throwable $e) {
             return $this->reject($e->getMessage());
         } finally {
