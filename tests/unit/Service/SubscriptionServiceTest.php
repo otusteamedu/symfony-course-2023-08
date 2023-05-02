@@ -16,6 +16,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class SubscriptionServiceTest extends TestCase
 {
+    use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
     private static EntityManagerInterface|MockInterface $entityManager;
     private const CORRECT_AUTHOR = 1;
     private const CORRECT_FOLLOWER = 2;
@@ -70,7 +72,7 @@ class SubscriptionServiceTest extends TestCase
     {
         /** @var MockInterface|EntityRepository $repository */
         $repository = Mockery::mock(EntityRepository::class);
-        $repository->shouldReceive('find')->with(self::INCORRECT_AUTHOR)->andReturn(null)->never();
+        $repository->shouldReceive('find')->with(self::INCORRECT_AUTHOR)->andReturn(null)->once();
         $repository->shouldReceive('find')->with(self::INCORRECT_FOLLOWER)->never();
         /** @var MockInterface|EntityManagerInterface $repository */
         self::$entityManager = Mockery::mock(EntityManagerInterface::class);
