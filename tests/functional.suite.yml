@@ -14,5 +14,9 @@ modules:
         - Doctrine2:
             depends: Symfony
             cleanup: true
+        - DataFactory:
+              depends: Doctrine2
+              cleanup: true
         - Asserts
+        - \App\Tests\Helper\Factories
         - \App\Tests\Helper\Functional
