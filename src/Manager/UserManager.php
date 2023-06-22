@@ -158,7 +158,15 @@ class UserManager
         return $userRepository->getUsers($page, $perPage);
     }
 
-    public function deleteUser(int $userId): bool
+    public function deleteUser(User $user): bool
+    {
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
+
+        return true;
+    }
+
+    public function deleteUserById(int $userId): bool
     {
         /** @var UserRepository $userRepository */
         $userRepository = $this->entityManager->getRepository(User::class);
@@ -167,10 +175,7 @@ class UserManager
         if ($user === null) {
             return false;
         }
-        $this->entityManager->remove($user);
-        $this->entityManager->flush();
-
-        return true;
+        return $this->deleteUser($user);
     }
 
     /**
