@@ -16,8 +16,8 @@ class UploadController extends AbstractController
     {
         /** @var UploadedFile $file */
         $file = $request->files->get('image');
-        $file->move('upload', sprintf('%s.%s', uniqid('image', true), $file->getClientOriginalExtension()));
+        $realFile = $file->move('upload', sprintf('%s.%s', uniqid('image', true), $file->getClientOriginalExtension()));
 
-        return new JsonResponse(['filename' => $file->getRealPath()]);
+        return new JsonResponse(['filename' => $realFile->getRealPath()]);
     }
 }
