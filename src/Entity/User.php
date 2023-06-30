@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\ArrayShape;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: '`user`')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -51,6 +52,8 @@ class User implements HasMetaTimestampsInterface
     #[ORM\Column(type: 'string', length: 32, nullable: false)]
     private string $password;
 
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(18)]
     #[ORM\Column(type: 'integer', nullable: false)]
     private int $age;
 
