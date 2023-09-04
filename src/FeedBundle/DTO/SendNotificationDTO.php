@@ -2,31 +2,19 @@
 
 namespace FeedBundle\DTO;
 
-use JsonException;
-use Symfony\Component\Serializer\Annotation\Ignore;
-
 class SendNotificationDTO
 {
-    #[Ignore]
-    private array $payload;
-
     private int $userId;
 
     private string $text;
 
-    public function __construct(int $userId, string $text)
+    private string $preferred;
+
+    public function __construct(int $userId, string $text, string $preferred)
     {
-        $this->payload = ['userId' => $userId, 'text' => $text];
         $this->userId = $userId;
         $this->text = $text;
-    }
-
-    /**
-     * @throws JsonException
-     */
-    public function toAMQPMessage(): string
-    {
-        return json_encode($this->payload, JSON_THROW_ON_ERROR);
+        $this->preferred = $preferred;
     }
 
     public function getUserId(): int
@@ -37,5 +25,10 @@ class SendNotificationDTO
     public function getText(): string
     {
         return $this->text;
+    }
+
+    public function getPreferred(): string
+    {
+        return $this->preferred;
     }
 }
