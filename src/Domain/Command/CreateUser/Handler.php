@@ -14,7 +14,7 @@ class Handler
     ) {
     }
 
-    public function __invoke(CreateUserCommand $command): void
+    public function __invoke(CreateUserCommand $command): int
     {
         $user = new User();
         $user->setLogin($command->getLogin());
@@ -24,5 +24,7 @@ class Handler
         $user->setIsActive($command->isActive());
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+
+        return $user->getId();
     }
 }
