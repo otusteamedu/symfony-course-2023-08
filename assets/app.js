@@ -1,12 +1,10 @@
 import { registerVueControllerComponents } from '@symfony/ux-vue';
 import './bootstrap.js';
 import './styles/app.scss';
-import Vue from 'vue';
+import Vue, {createApp} from 'vue';
 import App from './components/App';
 require('bootstrap');
 
-new Vue({
-    el: '#app',
-    render: h => h(App)
-});
+createApp(App).mount('#app');
+
 registerVueControllerComponents(require.context('./vue/controllers', true, /\.vue$/));
