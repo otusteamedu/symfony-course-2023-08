@@ -43,7 +43,7 @@ class ManageUserDTO
     public static function fromEntity(User $user): self
     {
         return new self(...[
-            'login' => $user->getLogin(),
+            'login' => $user->getLogin()->getValue(),
             'password' => $user->getPassword(),
             'age' => $user->getAge(),
             'isActive' => $user->isActive(),
@@ -52,7 +52,7 @@ class ManageUserDTO
                 static function (User $user) {
                     return [
                         'id' => $user->getId(),
-                        'login' => $user->getLogin(),
+                        'login' => $user->getLogin()->getValue(),
                         'password' => $user->getPassword(),
                         'age' => $user->getAge(),
                         'isActive' => $user->isActive(),

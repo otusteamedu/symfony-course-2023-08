@@ -3,12 +3,13 @@
 namespace App\Domain\Command\CreateUser;
 
 use App\Controller\Api\CreateUser\v5\Input\CreateUserDTO;
+use App\Domain\ValueObject\UserLogin;
 use JMS\Serializer\Annotation as JMS;
 
 final class CreateUserCommand
 {
     private function __construct(
-        private readonly string $login,
+        private readonly UserLogin $login,
         private readonly string $password,
         /** @JMS\Type("array<string>") */
         private readonly array $roles,
@@ -17,7 +18,7 @@ final class CreateUserCommand
     ) {
     }
 
-    public function getLogin(): string
+    public function getLogin(): UserLogin
     {
         return $this->login;
     }
@@ -45,7 +46,7 @@ final class CreateUserCommand
     public static function createFromRequest(CreateUserDTO $request): self
     {
         return new self(
-            $request->login,
+            new UserLogin($request->login),
             $request->password,
             $request->roles,
             $request->age,
