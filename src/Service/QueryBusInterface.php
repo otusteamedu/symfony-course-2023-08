@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use App\Domain\Query\QueryInterface;
+
 interface QueryBusInterface
 {
     /**

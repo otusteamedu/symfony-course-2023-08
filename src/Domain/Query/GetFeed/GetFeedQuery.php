@@ -2,7 +2,7 @@
 
 namespace App\Domain\Query\GetFeed;
 
-use App\Service\QueryInterface;
+use App\Domain\Query\QueryInterface;
 
 /**
  * @implements QueryInterface<GetFeedQueryResult>

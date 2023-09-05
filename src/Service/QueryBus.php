@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Domain\Query\QueryInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
