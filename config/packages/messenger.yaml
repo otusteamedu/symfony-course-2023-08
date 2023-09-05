@@ -32,6 +32,7 @@ framework:
             App\DTO\AddFollowersDTO: add_followers
             FeedBundle\DTO\SendNotificationDTO: doctrine
             App\DTO\SendNotificationAsyncDTO: send_notification
+            App\Domain\Command\CreateUser\CreateUserCommand: sync
 
 # when@test:
 #    framework:
