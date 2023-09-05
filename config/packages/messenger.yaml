@@ -26,13 +26,19 @@ framework:
                         name: 'old_sound_rabbit_mq.send_notification'
                         type: topic
                 serializer: 'messenger.transport.symfony_serializer'
+            create_user:
+                dsn: "%env(MESSENGER_AMQP_TRANSPORT_DSN)%"
+                options:
+                    exchange:
+                        name: 'old_sound_rabbit_mq.create_user'
+                        type: direct
             sync: 'sync://'
 
         routing:
             App\DTO\AddFollowersDTO: add_followers
             FeedBundle\DTO\SendNotificationDTO: doctrine
             App\DTO\SendNotificationAsyncDTO: send_notification
-            App\Domain\Command\CreateUser\CreateUserCommand: sync
+            App\Domain\Command\CreateUser\CreateUserCommand: create_user
 
 # when@test:
 #    framework:
