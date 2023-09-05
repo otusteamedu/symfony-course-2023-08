@@ -4,10 +4,8 @@
     User list - Vue
 {% endblock %}
 {% block body %}
-    <div ref="users" data-users="{{ users }}">
     </div>
-
     <div id="app">
-        <app></app>
+        <app :users="{{ users }}"> </app>
     </div>
 {% endblock %}

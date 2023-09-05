@@ -15,18 +15,11 @@
 
 <script>
 export default {
-
+  props: ['users'],
   data() {
     return {
-      users: [],
       columns: ['firstName', 'middleName', 'lastName', 'phone']
     };
   },
-  mounted() {
-    let data = document.querySelector("div[data-users]");
-    let userList = JSON.parse(data.dataset.users);
-
-    this.users.push.apply(this.users, userList);
-  }
 };
 </script>
