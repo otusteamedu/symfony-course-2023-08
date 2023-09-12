@@ -12,9 +12,10 @@
         "symfony/flex": "^2",
         "symfony/framework-bundle": "6.3.*",
         "symfony/runtime": "6.3.*",
+        "symfony/twig-bundle": "^6.3",
+        "symfony/ux-vue": "^2.11",
+        "symfony/webpack-encore-bundle": "^2.0",
         "symfony/yaml": "6.3.*"
-    },
-    "require-dev": {
     },
     "config": {
         "allow-plugins": {

@@ -1,0 +1,13 @@
+{% extends 'layout.twig' %}
+
+{% block title %}
+    User list - Vue
+{% endblock %}
+{% block body %}
+    <div ref="users" data-users="{{ users }}">
+    </div>
+
+    <div id="app">
+        <app></app>
+    </div>
+{% endblock %}
