@@ -8,6 +8,7 @@ use JetBrains\PhpStorm\ArrayShape;
 
 #[ORM\Table(name: 'tweet')]
 #[ORM\Entity]
+#[ORM\Index(columns: ['author_id'], name: 'tweet__author_id__ind')]
 class Tweet
 {
     #[ORM\Column(name: 'id', type: 'bigint', unique: true)]
