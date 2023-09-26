@@ -3,10 +3,11 @@
 namespace App\Manager;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 
 class UserManager
 {
@@ -144,6 +145,37 @@ class UserManager
             ->setParameter('userId', $userId);
 
         return $queryBuilder->executeQuery()->fetchAllNumeric();
+    }
+
+    /**
+     * @return User[]
+     */
+    public function getUsers(int $page, int $perPage): array
+    {
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->entityManager->getRepository(User::class);
+
+        return $userRepository->getUsers($page, $perPage);
+    }
+
+    public function deleteUser(User $user): bool
+    {
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
+
+        return true;
+    }
+
+    public function deleteUserById(int $userId): bool
+    {
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->entityManager->getRepository(User::class);
+        /** @var User $user */
+        $user = $userRepository->find($userId);
+        if ($user === null) {
+            return false;
+        }
+        return $this->deleteUser($user);
     }
 
     /**
