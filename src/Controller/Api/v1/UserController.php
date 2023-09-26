@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\v1;
 
+use App\DTO\ManageUserDTO;
 use App\Entity\User;
 use App\Event\CreateUserEvent;
 use App\Exception\DeprecatedApiException;
@@ -90,21 +91,26 @@ class UserController extends AbstractController
 
     #[Route(path: '/create-user', name: 'create_user', methods: ['GET', 'POST'])]
     #[Route(path: '/update-user/{id}', name: 'update-user', methods: ['GET', 'POST'])]
-    public function manageUserAction(Request $request, string $_route, ?User $user = null): Response
+    public function manageUserAction(Request $request, string $_route, ?int $id = null): Response
     {
-        $form = $this->formFactory->create(UserType::class, $user, ['isNew' => $_route === 'create_user']);
+        if ($id !== null) {
+            $user = $this->userManager->findUser($id);
+            $dto = ManageUserDTO::fromEntity($user);
+        }
+        $form = $this->formFactory->create(UserType::class, $dto ?? null, ['isNew' => $_route === 'create_user']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var User $user */
-            $user = $form->getData();
-            $this->userManager->saveUser($user);
+            /** @var ManageUserDTO $userDto */
+            $userDto = $form->getData();
+
+            $this->userManager->saveUserFromDTO($user ?? new User(), $userDto);
         }
 
         return $this->render('manageUser.html.twig', [
             'form' => $form,
             'isNew' => $_route === 'create_user',
-            'user' => $user,
+            'user' => $dto ?? null,
         ]);
     }
 }
