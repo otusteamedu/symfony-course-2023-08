@@ -174,6 +174,11 @@ class User implements HasMetaTimestampsInterface
         $this->isActive = $isActive;
     }
 
+    public function getFollowers(): array
+    {
+        return $this->followers->toArray();
+    }
+
     #[ArrayShape(['id' => 'int|null', 'login' => 'string', 'createdAt' => 'string', 'updatedAt' => 'string', 'tweets' => ['id' => 'int|null', 'login' => 'string', 'createdAt' => 'string', 'updatedAt' => 'string'], 'followers' => 'string[]',
         'authors' => 'string[]'])]
     public function toArray(): array
