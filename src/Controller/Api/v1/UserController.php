@@ -90,7 +90,7 @@ class UserController extends AbstractController
     }
 
     #[Route(path: '/create-user', name: 'create_user', methods: ['GET', 'POST'])]
-    #[Route(path: '/update-user/{id}', name: 'update-user', methods: ['GET', 'POST'])]
+    #[Route(path: '/update-user/{id}', name: 'update-user', methods: ['GET', 'PATCH'])]
     public function manageUserAction(Request $request, string $_route, ?int $id = null): Response
     {
         if ($id !== null) {
