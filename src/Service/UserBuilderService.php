@@ -22,7 +22,7 @@ class UserBuilderService
      */
     public function createUserWithTweets(string $login, array $texts): User
     {
-        $user = $this->userManager->create($login);
+        $user = $this->userManager->createByLogin($login);
         foreach ($texts as $text) {
             $this->tweetManager->postTweet($user, $text);
         }
@@ -35,8 +35,8 @@ class UserBuilderService
      */
     public function createUserWithFollower(string $login, string $followerLogin): array
     {
-        $user = $this->userManager->create($login);
-        $follower = $this->userManager->create($followerLogin);
+        $user = $this->userManager->createByLogin($login);
+        $follower = $this->userManager->createByLogin($followerLogin);
         $this->userManager->subscribeUser($user, $follower);
         $this->subscriptionManager->addSubscription($user, $follower);
 

@@ -412,7 +412,7 @@
          */
         public function createUserWithTweets(string $login, array $texts): User
         {
-            $user = $this->userManager->create($login);
+            $user = $this->userManager->createByLogin($login);
             foreach ($texts as $text) {
                 $this->tweetManager->postTweet($user, $text);
             }

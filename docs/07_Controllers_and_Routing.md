@@ -261,7 +261,7 @@
         public function saveUserAction(Request $request): Response
         {
             $login = $request->request->get('login');
-            $userId = $this->userManager->create($login);
+            $userId = $this->userManager->createByLogin($login);
             [$data, $code] = $userId === null ?
                 [['success' => false], Response::HTTP_BAD_REQUEST] :
                 [['success' => true, 'userId' => $userId], Response::HTTP_OK];
@@ -395,7 +395,7 @@
         public function saveUserAction(Request $request): Response
         {
             $login = $request->request->get('login');
-            $userId = $this->userManager->create($login);
+            $userId = $this->userManager->createByLogin($login);
             [$data, $code] = $userId === null ?
                 [['success' => false], Response::HTTP_BAD_REQUEST] :
                 [['success' => true, 'userId' => $userId], Response::HTTP_OK];

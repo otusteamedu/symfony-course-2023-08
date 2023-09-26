@@ -16,10 +16,12 @@
         "symfony/dotenv": "6.3.*",
         "symfony/expression-language": "6.3.*",
         "symfony/flex": "^2",
+        "symfony/form": "6.3.*",
         "symfony/framework-bundle": "6.3.*",
         "symfony/runtime": "6.3.*",
         "symfony/twig-bundle": "6.3.*",
         "symfony/ux-vue": "^2.11",
+        "symfony/validator": "6.3.*",
         "symfony/webpack-encore-bundle": "^2.0",
         "symfony/yaml": "6.3.*"
     },

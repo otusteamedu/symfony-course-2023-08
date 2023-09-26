@@ -15,7 +15,7 @@ class UserManager
     {
     }
 
-    public function create(string $login): User
+    public function createByLogin(string $login): User
     {
         $user = new User();
         $user->setLogin($login);
@@ -23,6 +23,12 @@ class UserManager
         $this->entityManager->flush();
 
         return $user;
+    }
+
+    public function saveUser(User $user): void
+    {
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 
     public function clearEntityManager(): void
