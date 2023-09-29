@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\ArrayShape;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: '`user`')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -47,6 +48,17 @@ class User implements HasMetaTimestampsInterface
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: 'Subscription')]
     private Collection $subscriptionFollowers;
+
+    #[ORM\Column(type: 'string', length: 32, nullable: false)]
+    private string $password;
+
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(18)]
+    #[ORM\Column(type: 'integer', nullable: false)]
+    private int $age;
+
+    #[ORM\Column(type: 'boolean', nullable: false)]
+    private bool $isActive;
 
     public function __construct()
     {
@@ -130,6 +142,41 @@ class User implements HasMetaTimestampsInterface
         if (!$this->subscriptionFollowers->contains($subscription)) {
             $this->subscriptionFollowers->add($subscription);
         }
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    public function getAge(): int
+    {
+        return $this->age;
+    }
+
+    public function setAge(int $age): void
+    {
+        $this->age = $age;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): void
+    {
+        $this->isActive = $isActive;
+    }
+
+    public function getFollowers(): array
+    {
+        return $this->followers->toArray();
     }
 
     #[ArrayShape(['id' => 'int|null', 'login' => 'string', 'createdAt' => 'string', 'updatedAt' => 'string', 'tweets' => ['id' => 'int|null', 'login' => 'string', 'createdAt' => 'string', 'updatedAt' => 'string'], 'followers' => 'string[]',

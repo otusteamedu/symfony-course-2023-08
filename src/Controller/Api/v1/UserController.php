@@ -2,12 +2,17 @@
 
 namespace App\Controller\Api\v1;
 
+use App\DTO\ManageUserDTO;
 use App\Entity\User;
 use App\Event\CreateUserEvent;
 use App\Exception\DeprecatedApiException;
+use App\Form\Type\CreateUserType;
+use App\Form\Type\UpdateUserType;
+use App\Form\Type\UserType;
 use App\Manager\UserManager;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +27,7 @@ class UserController extends AbstractController
     public function __construct(
         private readonly UserManager $userManager,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly FormFactoryInterface $formFactory,
     ) {
     }
 
@@ -31,7 +37,7 @@ class UserController extends AbstractController
         throw new DeprecatedApiException('This API method is deprecated');
 
         $login = $request->request->get('login');
-        $userId = $this->userManager->create($login);
+        $userId = $this->userManager->createByLogin($login);
         [$data, $code] = $userId === null ?
             [['success' => false], Response::HTTP_BAD_REQUEST] :
             [['success' => true, 'userId' => $userId], Response::HTTP_OK];
@@ -84,4 +90,31 @@ class UserController extends AbstractController
 
         return new JsonResponse(['success' => $result], $result ? Response::HTTP_OK : Response::HTTP_NOT_FOUND);
     }
-}
+
+    #[Route(path: '/create-user', name: 'create_user', methods: ['GET', 'POST'])]
+    #[Route(path: '/update-user/{id}', name: 'update_user', methods: ['GET', 'PATCH'])]
+    public function manageUserAction(Request $request, string $_route, ?int $id = null): Response
+    {
+        if ($id) {
+            $user = $this->userManager->findUser($id);
+            $dto = ManageUserDTO::fromEntity($user);
+        }
+        $form = $this->formFactory->create(
+            $_route === 'create_user' ? CreateUserType::class : UpdateUserType::class,
+            $dto ?? null,
+        );
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var ManageUserDTO $userDto */
+            $userDto = $form->getData();
+
+            $this->userManager->saveUserFromDTO($user ?? new User(), $userDto);
+        }
+
+        return $this->renderForm('manageUser.html.twig', [
+            'form' => $form,
+            'isNew' => $_route === 'create_user',
+            'user' => $user ?? null,
+        ]);
+    }}
