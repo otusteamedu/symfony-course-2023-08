@@ -18,8 +18,8 @@ class GetUsersAction extends AbstractFOSRestController
     {
     }
 
-    #[Rest\Get(path: '/api/v4/users')]
-    public function __invoke(Request $request): Response
+    #[Rest\Get(path: '/api/v4/users.{format}', defaults: ['format' => 'json'])]
+    public function __invoke(Request $request, string $format): Response
     {
         $perPage = $request->request->get('perPage');
         $page = $request->request->get('page');
@@ -28,7 +28,7 @@ class GetUsersAction extends AbstractFOSRestController
         $context = (new Context())->setGroups(['video-user-info']);
 
         return $this->handleView(
-            $this->view(['users' => $users], $code)->setContext($context),
+            $this->view(['users' => $users], $code)->setContext($context)->setFormat($format),
         );
     }
 }
