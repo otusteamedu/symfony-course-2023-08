@@ -25,7 +25,7 @@ class GetUsersAction extends AbstractFOSRestController
         $page = $request->request->get('page');
         $users = $this->userManager->getUsers($page ?? self::DEFAULT_PAGE, $perPage ?? self::DEFAULT_PER_PAGE);
         $code = empty($users) ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
-        $context = (new Context())->setGroups(['video-user-info']);
+        $context = (new Context())->setGroups(['video-user-info', 'user-id-list']);
 
         return $this->handleView(
             $this->view(['users' => $users], $code)->setContext($context)->setFormat($format),
