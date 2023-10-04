@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\ArrayShape;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -52,14 +53,17 @@ class User implements HasMetaTimestampsInterface, UserInterface, PasswordAuthent
     private Collection $subscriptionFollowers;
 
     #[ORM\Column(type: 'string', length: 120, nullable: false)]
+    #[JMS\Exclude]
     private string $password;
 
     #[Assert\NotBlank]
     #[Assert\GreaterThan(18)]
     #[ORM\Column(type: 'integer', nullable: false)]
+    #[JMS\Type('string')]
     private int $age;
 
     #[ORM\Column(type: 'boolean', nullable: false)]
+    #[JMS\Type('int')]
     private bool $isActive;
 
     #[ORM\Column(type: 'json', length: 1024, nullable: false)]
