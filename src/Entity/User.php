@@ -24,6 +24,7 @@ class User implements HasMetaTimestampsInterface, UserInterface, PasswordAuthent
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 32, unique: true, nullable: false)]
+    #[JMS\Groups(['video-user-info'])]
     private string $login;
 
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: false)]
@@ -60,10 +61,12 @@ class User implements HasMetaTimestampsInterface, UserInterface, PasswordAuthent
     #[Assert\GreaterThan(18)]
     #[ORM\Column(type: 'integer', nullable: false)]
     #[JMS\Type('string')]
+    #[JMS\Groups(['video-user-info'])]
     private int $age;
 
     #[ORM\Column(type: 'boolean', nullable: false)]
     #[JMS\Type('int')]
+    #[JMS\Groups(['video-user-info'])]
     private bool $isActive;
 
     #[ORM\Column(type: 'json', length: 1024, nullable: false)]
