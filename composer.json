@@ -10,6 +10,8 @@
         "doctrine/doctrine-bundle": "*",
         "doctrine/doctrine-migrations-bundle": "*",
         "doctrine/orm": "*",
+        "friendsofsymfony/rest-bundle": "^3.6",
+        "jms/serializer-bundle": "^5.3",
         "sensio/framework-extra-bundle": "^6.2",
         "stof/doctrine-extensions-bundle": "^1.8",
         "symfony/console": "6.3.*",
