@@ -7,6 +7,7 @@ use App\Controller\Common\ErrorResponseTrait;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class CreateUserAction extends AbstractFOSRestController
@@ -18,12 +19,8 @@ class CreateUserAction extends AbstractFOSRestController
     }
 
     #[Rest\Post(path: '/api/v5/users')]
-    public function saveUserAction(CreateUserDTO $request, ConstraintViolationListInterface $validationErrors): Response
+    public function saveUserAction(#[MapRequestPayload] CreateUserDTO $request): Response
     {
-        if ($validationErrors->count()) {
-            $view = $this->createValidationErrorResponse(Response::HTTP_BAD_REQUEST, $validationErrors);
-            return $this->handleView($view);
-        }
         $user = $this->saveUserManager->saveUser($request);
         [$data, $code] = ($user->id === null) ? [['success' => false], 400] : [['user' => $user], 200];
 

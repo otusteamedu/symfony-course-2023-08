@@ -7,8 +7,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateUserDTO
 {
-    use SafeLoadFieldsTrait;
-
     #[Assert\NotBlank]
     #[Assert\Type('string')]
     #[Assert\Length(max: 32)]
