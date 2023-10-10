@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\CreateUser\v5;
 
+use App\Client\StatsdAPIClient;
 use App\Controller\Api\CreateUser\v5\Input\CreateUserDTO;
 use App\Controller\Api\CreateUser\v5\Output\UserIsCreatedDTO;
 use App\Entity\User;
@@ -18,11 +19,13 @@ class CreateUserManager
         private readonly SerializerInterface $serializer,
         private readonly UserPasswordHasherInterface $userPasswordHasher,
         private readonly LoggerInterface $logger,
+        private readonly StatsdAPIClient $statsdAPIClient,
     ) {
     }
 
     public function saveUser(CreateUserDTO $saveUserDTO): UserIsCreatedDTO
     {
+        $this->statsdAPIClient->increment('save_user_v5_attempt');
         $this->logger->debug('This is debug message');
         $this->logger->info('This is info message');
         $this->logger->notice('This is notice message');
