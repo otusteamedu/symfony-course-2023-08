@@ -3,24 +3,25 @@
 namespace App\EventSubscriber;
 
 use App\Event\CreateUserEvent;
-use App\Manager\UserManager;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CreateUserEventSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private readonly UserManager $userManager)
-    {
+    public function __construct(
+        private readonly LoggerInterface $logger,
+    ) {
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            CreateUserEvent::class => 'onCreateUser'
+            CreateUserEvent::class => 'logCreateUser'
         ];
     }
 
-    public function onCreateUser(CreateUserEvent $event): void
+    public function logCreateUser(CreateUserEvent $event): void
     {
-        $this->userManager->saveUser($event->getLogin());
+        $this->logger->info('User created with login: ' . $event->getLogin());
     }
 }

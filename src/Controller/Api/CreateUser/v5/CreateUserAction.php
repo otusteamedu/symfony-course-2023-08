@@ -14,7 +14,7 @@ class CreateUserAction extends AbstractFOSRestController
 {
     use ErrorResponseTrait;
 
-    public function __construct(private readonly CreateUserManager $saveUserManager)
+    public function __construct(private readonly CreateUserManagerInterface $saveUserManager)
     {
     }
 
