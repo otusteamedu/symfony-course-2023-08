@@ -104,3 +104,19 @@ services:
     App\Controller\Api\CreateUser\v5\CreateUserManagerLoggerDecorator:
         decorates: App\Controller\Api\CreateUser\v5\CreateUserManager
         arguments: [ '@.inner' ]
+
+    redis_client:
+        class: Redis
+        factory: Symfony\Component\Cache\Adapter\RedisAdapter::createConnection
+        arguments:
+            - '%env(REDIS_DSN)%'
+
+    redis_adapter:
+        class: Symfony\Component\Cache\Adapter\RedisTagAwareAdapter
+        arguments:
+            - '@redis_client'
+            - 'my_app'
+
+    App\Manager\TweetManager:
+        arguments:
+            $cache: '@redis_adapter'
