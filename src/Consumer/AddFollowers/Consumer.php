@@ -35,7 +35,7 @@ class Consumer implements ConsumerInterface
             return $this->reject($e->getMessage());
         }
 
-        if ($message->getFollowerLogin() === 'multi_follower_error2 #11') {
+        if ($message->getFollowerLogin() === 'multi_follower_error #11') {
             throw new Exception('Planned error');
         }
 
