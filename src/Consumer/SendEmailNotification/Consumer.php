@@ -1,24 +1,22 @@
 <?php
 
-namespace App\Consumer\AddFollowers;
+namespace App\Consumer\SendEmailNotification;
 
-use App\Consumer\AddFollowers\Input\Message;
+use App\Consumer\SendEmailNotification\Input\Message;
 use App\Entity\User;
-use App\Service\SubscriptionService;
+use App\Manager\EmailNotificationManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use JsonException;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Throwable;
 
 class Consumer implements ConsumerInterface
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly ValidatorInterface $validator,
-        private readonly SubscriptionService $subscriptionService
+        private readonly EmailNotificationManager $emailNotificationManager,
     )
     {
     }
@@ -35,20 +33,16 @@ class Consumer implements ConsumerInterface
             return $this->reject($e->getMessage());
         }
 
-        try {
-            $userRepository = $this->entityManager->getRepository(User::class);
-            $user = $userRepository->find($message->getUserId());
-            if (!($user instanceof User)) {
-                return $this->reject(sprintf('User ID %s was not found', $message->getUserId()));
-            }
-
-            $this->subscriptionService->addFollowers($user, $message->getFollowerLogin(), $message->getCount());
-        } catch (Throwable $e) {
-            return $this->reject($e->getMessage());
-        } finally {
-            $this->entityManager->clear();
-            $this->entityManager->getConnection()->close();
+        $userRepository = $this->entityManager->getRepository(User::class);
+        $user = $userRepository->find($message->getUserId());
+        if (!($user instanceof User)) {
+            return $this->reject(sprintf('User ID %s was not found', $message->getUserId()));
         }
+
+        $this->emailNotificationManager->saveEmailNotification($user->getEmail(), $message->getText());
+
+        $this->entityManager->clear();
+        $this->entityManager->getConnection()->close();
 
         return self::MSG_ACK;
     }
