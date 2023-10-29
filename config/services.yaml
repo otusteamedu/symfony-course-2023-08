@@ -191,3 +191,6 @@ services:
             - 'http://elasticsearch:9200'
             - 'monolog'
             - '@http_client_without_logs'
+    App\Manager\UserManager:
+        arguments:
+            $finder: '@fos_elastica.finder.user'
