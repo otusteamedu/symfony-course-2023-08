@@ -10,22 +10,22 @@ class CreateUserManagerLoggerDecorator implements CreateUserManagerInterface
 {
     public function __construct(
         private readonly CreateUserManagerInterface $manager,
-        private readonly LoggerInterface $logger,
+        private readonly LoggerInterface $elasticsearchLogger,
     ) {
     }
 
     public function saveUser(CreateUserDTO $saveUserDTO): UserIsCreatedDTO
     {
-        $this->logger->info('Creating new user');
+        $this->elasticsearchLogger->info('Creating new user');
 
         try {
             $result = $this->manager->saveUser($saveUserDTO);
         } catch (\Throwable $e) {
-            $this->logger->error('Creation error');
+            $this->elasticsearchLogger->error('Creation error');
             throw $e;
         }
 
-        $this->logger->info('New user created');
+        $this->elasticsearchLogger->info('New user created');
 
         return $result;
     }
