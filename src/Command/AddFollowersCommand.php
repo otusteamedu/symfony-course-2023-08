@@ -10,26 +10,22 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AddFollowersCommand extends Command
+final class AddFollowersCommand extends Command
 {
-    public const DEFAULT_FOLLOWERS = 10;
-    public const DEFAULT_LOGIN_PREFIX = 'qwe';
+    private const DEFAULT_FOLLOWERS = 10;
+    private const DEFAULT_LOGIN_PREFIX = 'cli_follower';
 
-    private UserManager $userManager;
-
-    private SubscriptionService $subscriptionService;
-
-    public function __construct(UserManager $userManager, SubscriptionService $subscriptionService)
-    {
+    public function __construct(
+        private readonly UserManager $userManager,
+        private readonly SubscriptionService $subscriptionService
+    ) {
         parent::__construct();
-        $this->userManager = $userManager;
-        $this->subscriptionService = $subscriptionService;
     }
 
     protected function configure(): void
     {
         $this->setName('followers:add')
-            ->setHidden(true)
+            ->setHidden()
             ->setDescription('Adds followers to author')
             ->addArgument('authorId', InputArgument::REQUIRED, 'ID of author')
             ->addArgument('count', InputArgument::OPTIONAL, 'How many followers should be added')
