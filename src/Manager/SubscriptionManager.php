@@ -33,4 +33,13 @@ class SubscriptionManager
         $subscriptionRepository = $this->entityManager->getRepository(Subscription::class);
         return $subscriptionRepository->findBy(['author' => $author]) ?? [];
     }
+
+    /**
+     * @return Subscription[]
+     */
+    public function findAllByFollower(User $follower): array
+    {
+        $subscriptionRepository = $this->entityManager->getRepository(Subscription::class);
+        return $subscriptionRepository->findBy(['follower' => $follower]) ?? [];
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Feed;
 use App\Entity\Tweet;
 use App\Entity\User;
+use App\Manager\TweetManager;
 use Doctrine\ORM\EntityManagerInterface;
 
 class FeedService
@@ -13,6 +14,7 @@ class FeedService
         private readonly EntityManagerInterface $entityManager,
         private readonly SubscriptionService $subscriptionService,
         private readonly AsyncService $asyncService,
+        private readonly TweetManager $tweetManager,
     )
     {
     }
@@ -70,5 +72,10 @@ class FeedService
         }
 
         return $feed;
+    }
+
+    public function getFeedFromTweets(int $userId, int $count): array
+    {
+        return $this->tweetManager->getFeed($this->subscriptionService->getAuthorIds($userId), $count);
     }
 }
