@@ -121,7 +121,7 @@ class SubscriptionService
      */
     private function getSubscriptionsByFollowerId(int $followerId): array
     {
-        $follower = $this->userManager->getUserById($followerId);
+        $follower = $this->userManager->findUser($followerId);
         if (!($follower instanceof User)) {
             return [];
         }
