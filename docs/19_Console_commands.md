@@ -577,7 +577,7 @@
         $commandTester->execute($params);
         $output = $commandTester->getDisplay();
 
-        static::assertSame($expected, $output);
+        static::assertStringEndsWith($expected, $output);
     }
     ```
 4. Запускаем тесты командой `./vendor/bin/simple-phpunit tests/unit/Command/AddFollowersCommandTest.php`
