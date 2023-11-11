@@ -1,25 +1,24 @@
 <?php
 
-namespace CodeceptionUnitTests\Service;
+namespace UnitTests\Service;
 
 use App\Entity\User;
 use App\Manager\SubscriptionManager;
 use App\Manager\UserManager;
 use App\Service\SubscriptionService;
-use Codeception\Test\Unit;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Mockery;
 use Mockery\MockInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class SubscriptionServiceTest extends Unit
+class SubscriptionServiceTest extends TestCase
 {
     use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-    /** @var EntityManagerInterface|MockInterface */
-    private static $entityManager;
+    private static EntityManagerInterface|MockInterface $entityManager;
     private const CORRECT_AUTHOR = 1;
     private const CORRECT_FOLLOWER = 2;
     private const INCORRECT_AUTHOR = 3;
@@ -55,7 +54,7 @@ class SubscriptionServiceTest extends Unit
      */
     public function testSubscribeReturnsCorrectResult(int $authorId, int $followerId, bool $expected): void
     {
-        usleep(400000);
+        usleep(350000);
         /** @var UserPasswordHasherInterface $encoder */
         $encoder = Mockery::mock(UserPasswordHasherInterface::class);
         /** @var PaginatedFinderInterface $finder */
