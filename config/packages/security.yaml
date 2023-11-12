@@ -27,3 +27,4 @@ security:
 
   access_control:
     - { path: ^/api/v4/users, roles: ROLE_ADMIN }
+    - { path: ^/api/doc, roles: ROLE_ADMIN }
