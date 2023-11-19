@@ -7,6 +7,7 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "aleksandr-yask/sf-08-statsd-bundle": "dev-main",
         "doctrine/doctrine-bundle": "*",
         "doctrine/doctrine-migrations-bundle": "*",
         "doctrine/orm": "*",
@@ -52,8 +53,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/",
-            "StatsdBundle\\": "src/StatsdBundle"
+            "App\\": "src/"
         }
     },
     "autoload-dev": {
@@ -105,5 +105,11 @@
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "mockery/mockery": "^1.6",
         "symfony/phpunit-bridge": "^6.3"
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:aleksandr-yask/sf-08-statsd-bundle.git"
+        }
+    ]
 }
