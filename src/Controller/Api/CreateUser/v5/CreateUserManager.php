@@ -2,7 +2,6 @@
 
 namespace App\Controller\Api\CreateUser\v5;
 
-use App\Client\StatsdAPIClient;
 use App\Controller\Api\CreateUser\v5\Input\CreateUserDTO;
 use App\Controller\Api\CreateUser\v5\Output\UserIsCreatedDTO;
 use App\Entity\User;
@@ -10,7 +9,7 @@ use App\Event\CreateUserEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
-use Psr\Log\LoggerInterface;
+use StatsdBundle\Client\StatsdAPIClient;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 

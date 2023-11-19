@@ -2,7 +2,6 @@
 
 namespace App\Consumer\UpdateFeed;
 
-use App\Client\StatsdAPIClient;
 use App\Consumer\UpdateFeed\Input\Message;
 use App\DTO\SendNotificationDTO;
 use App\Entity\Tweet;
@@ -13,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
+use StatsdBundle\Client\StatsdAPIClient;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class Consumer implements ConsumerInterface
