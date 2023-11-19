@@ -4,11 +4,8 @@ namespace App\Consumer\PublishTweet;
 
 use App\Consumer\PublishTweet\Input\Message;
 use App\Consumer\PublishTweet\Output\UpdateFeedMessage;
-use App\DTO\SendNotificationDTO;
 use App\Entity\Tweet;
-use App\Entity\User;
 use App\Service\AsyncService;
-use App\Service\FeedService;
 use App\Service\SubscriptionService;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
@@ -22,10 +19,8 @@ class Consumer implements ConsumerInterface
         private readonly EntityManagerInterface $entityManager,
         private readonly ValidatorInterface $validator,
         private readonly SubscriptionService $subscriptionService,
-        private readonly FeedService $feedService,
-        private readonly AsyncService $asyncService,
-    )
-    {
+        private readonly AsyncService $asyncService
+    ) {
     }
 
     public function execute(AMQPMessage $msg): int
@@ -46,11 +41,11 @@ class Consumer implements ConsumerInterface
             return $this->reject(sprintf('Tweet ID %s was not found', $message->getTweetId()));
         }
 
-        $followerIds = $this->subscriptionService->getFollowerIds($tweet->getAuthor()->getId());
+        $followers = $this->subscriptionService->getFollowers($tweet->getAuthor()->getId());
 
-        foreach ($followerIds as $followerId) {
-            $message = (new UpdateFeedMessage($tweet->getId(), $followerId))->toAMQPMessage();
-            $this->asyncService->publishToExchange(AsyncService::UPDATE_FEED, $message, (string)$followerId);
+        foreach ($followers as $follower) {
+            $message = (new UpdateFeedMessage($tweet, $follower))->toAMQPMessage();
+            $this->asyncService->publishToExchange(AsyncService::UPDATE_FEED, $message, (string)$follower->getId());
         }
 
         $this->entityManager->clear();
