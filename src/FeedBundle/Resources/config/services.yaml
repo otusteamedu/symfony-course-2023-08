@@ -60,3 +60,11 @@ services:
     class: FeedBundle\Consumer\UpdateFeed\Consumer
     arguments:
       $key: 'update_feed_9'
+
+  feed_http_client:
+    class: GuzzleHttp\Client
+
+  App\Client\FeedClient:
+    arguments:
+      - '@feed_http_client'
+      - 'http://nginx:80'

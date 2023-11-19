@@ -1,6 +1,6 @@
 <?php
 
-namespace FeedBundle\Facade;
+namespace App\Facade;
 
 use FeedBundle\Service\FeedService;
 
