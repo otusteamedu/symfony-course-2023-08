@@ -4,8 +4,43 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1f00dac5abeb1334b41920b7cc0f9939",
+    "content-hash": "49bce729dfa1b9975c1f3ff5b6ccf6f2",
     "packages": [
+        {
+            "name": "aleksandr-yask/sf-08-statsd-bundle",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Aleksandr-yask/sf-08-statsd-bundle.git",
+                "reference": "43aee6c7c8c32962c9b6b2ba5e5a9c8dd2b85ea8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Aleksandr-yask/sf-08-statsd-bundle/zipball/43aee6c7c8c32962c9b6b2ba5e5a9c8dd2b85ea8",
+                "reference": "43aee6c7c8c32962c9b6b2ba5e5a9c8dd2b85ea8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1",
+                "slickdeals/statsd": "^3.1"
+            },
+            "default-branch": true,
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "StatsdBundle\\": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Provides configured StatsdAPIClient",
+            "support": {
+                "source": "https://github.com/Aleksandr-yask/sf-08-statsd-bundle/tree/main",
+                "issues": "https://github.com/Aleksandr-yask/sf-08-statsd-bundle/issues"
+            },
+            "time": "2023-11-19T15:39:26+00:00"
+        },
         {
             "name": "behat/transliterator",
             "version": "v1.5.0",
@@ -13148,7 +13183,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "aleksandr-yask/sf-08-statsd-bundle": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

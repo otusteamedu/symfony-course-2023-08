@@ -3,11 +3,11 @@
 namespace UnitTests\Service;
 
 use App\Entity\Tweet;
+use FeedBundle\Service\FeedService;
 use App\Manager\SubscriptionManager;
 use App\Manager\TweetManager;
 use App\Manager\UserManager;
 use App\Service\AsyncService;
-use App\Service\FeedService;
 use App\Service\SubscriptionService;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Mockery;

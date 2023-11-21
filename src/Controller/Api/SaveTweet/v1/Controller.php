@@ -3,10 +3,11 @@
 namespace App\Controller\Api\SaveTweet\v1;
 
 use App\Controller\Common\ErrorResponseTrait;
+use App\Service\AsyncService;
 use App\Manager\TweetManager;
-use App\Service\FeedService;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
+use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -14,16 +15,10 @@ class Controller extends AbstractFOSRestController
 {
     use ErrorResponseTrait;
 
-    public function __construct(
-        private readonly TweetManager $tweetManager,
-        private readonly FeedService $feedService,
-    )
+    public function __construct(private TweetManager $tweetManager, private AsyncService $asyncService)
     {
     }
 
-    /**
-     * @throws \Psr\Cache\InvalidArgumentException
-     */
     #[Route(path: '/api/v1/tweet', methods: ['POST'])]
     #[RequestParam(name: 'authorId', requirements: '\d+')]
     #[RequestParam(name: 'text')]
@@ -34,9 +29,9 @@ class Controller extends AbstractFOSRestController
         $success = $tweet !== null;
         if ($success) {
             if ($async === 1) {
-                $this->feedService->spreadTweetAsync($tweet);
+                $this->asyncService->publishToExchange(AsyncService::PUBLISH_TWEET, $tweet->toAMPQMessage());
             } else {
-                $this->feedService->spreadTweetSync($tweet);
+                return $this->handleView(View::create(['message' => 'Sync post is no longer supported'], 400));
             }
         }
         $code = $success ? 200 : 400;

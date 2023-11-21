@@ -2,7 +2,6 @@
 
 namespace App\Controller\Api\AddFollowers\v1;
 
-use App\DTO\AddFollowersDTO;
 use App\Manager\UserManager;
 use App\Service\AsyncService;
 use App\Service\SubscriptionService;

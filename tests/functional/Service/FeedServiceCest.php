@@ -5,7 +5,7 @@ namespace IntegrationTests\Service;
 use App\Entity\Subscription;
 use App\Entity\Tweet;
 use App\Entity\User;
-use App\Service\FeedService;
+use FeedBundle\Service\FeedService;
 use App\Tests\FunctionalTester;
 use Codeception\Example;
 

@@ -1,4 +1,7 @@
 {
+    "aleksandr-yask/sf-08-statsd-bundle": {
+        "version": "dev-main"
+    },
     "codeception/codeception": {
         "version": "5.0",
         "recipe": {
