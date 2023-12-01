@@ -1,20 +1,17 @@
 <?php
 
-namespace FeedBundle\DTO;
+namespace App\DTO;
 
-class SendNotificationDTO
+class SendNotificationAsyncDTO
 {
     private int $userId;
 
     private string $text;
 
-    private string $preferred;
-
-    public function __construct(int $userId, string $text, string $preferred)
+    public function __construct(int $userId, string $text)
     {
         $this->userId = $userId;
         $this->text = $text;
-        $this->preferred = $preferred;
     }
 
     public function getUserId(): int
@@ -25,10 +22,5 @@ class SendNotificationDTO
     public function getText(): string
     {
         return $this->text;
-    }
-
-    public function getPreferred(): string
-    {
-        return $this->preferred;
     }
 }
