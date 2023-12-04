@@ -8,6 +8,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "aleksandr-yask/sf-08-statsd-bundle": "dev-main",
+        "api-platform/core": "^3.2",
         "doctrine/doctrine-bundle": "*",
         "doctrine/doctrine-migrations-bundle": "*",
         "doctrine/orm": "*",
@@ -16,6 +17,7 @@
         "jms/serializer-bundle": "^5.3",
         "lexik/jwt-authentication-bundle": "^2.19",
         "nelmio/api-doc-bundle": "^4.12",
+        "nelmio/cors-bundle": "^2.4",
         "php-amqplib/rabbitmq-bundle": "^2.11",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.24",
@@ -23,6 +25,7 @@
         "slickdeals/statsd": "^3.1",
         "stof/doctrine-extensions-bundle": "^1.8",
         "symfony/amqp-messenger": "6.3.*",
+        "symfony/asset": "6.3.*",
         "symfony/console": "6.3.*",
         "symfony/doctrine-messenger": "6.3.*",
         "symfony/dotenv": "6.3.*",
@@ -44,7 +47,8 @@
         "symfony/ux-vue": "^2.11",
         "symfony/validator": "6.3.*",
         "symfony/webpack-encore-bundle": "^2.0",
-        "symfony/yaml": "6.3.*"
+        "symfony/yaml": "6.3.*",
+        "webonyx/graphql-php": "^15.8"
     },
     "config": {
         "allow-plugins": {

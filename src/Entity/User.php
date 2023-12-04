@@ -2,7 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GraphQl\DeleteMutation;
+use ApiPlatform\Metadata\GraphQl\Query;
+use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use App\Repository\UserRepository;
+use App\Resolver\UserCollectionResolver;
+use App\Resolver\UserResolver;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,6 +25,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: '`user`')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ApiResource(graphQlOperations: [
+    new Query(),
+    new QueryCollection(),
+    new QueryCollection(
+        resolver: UserCollectionResolver::class,
+        name: 'collectionQuery',
+    ),
+    new Query(
+        resolver: UserResolver::class,
+        args: [
+            'id' => ['type' => 'Int'],
+            'login' => ['type' => 'String'],
+        ],
+        read: false,
+        name: 'itemQuery',
+    )
+])]
+#[ApiFilter(SearchFilter::class, properties: ['login' => 'partial'])]
+#[ApiFilter(OrderFilter::class, properties: ['login'])]
 class User implements HasMetaTimestampsInterface, UserInterface, PasswordAuthenticatedUserInterface
 {
     public const EMAIL_NOTIFICATION = 'email';
@@ -87,6 +115,9 @@ class User implements HasMetaTimestampsInterface, UserInterface, PasswordAuthent
 
     #[ORM\Column(type: 'string', length: 32, unique: true, nullable: true)]
     private ?string $token = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $isProtected;
 
     public function __construct()
     {
@@ -324,5 +355,23 @@ class User implements HasMetaTimestampsInterface, UserInterface, PasswordAuthent
     public function setPreferred(?string $preferred): void
     {
         $this->preferred = $preferred;
+    }
+
+    /**
+     * @return Subscription[]
+     */
+    public function getSubscriptionFollowers(): array
+    {
+        return $this->subscriptionFollowers->toArray();
+    }
+
+    public function isProtected(): bool
+    {
+        return $this->isProtected ?? false;
+    }
+
+    public function setIsProtected(bool $isProtected): void
+    {
+        $this->isProtected = $isProtected;
     }
 }
