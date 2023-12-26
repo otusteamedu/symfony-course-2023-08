@@ -9,7 +9,9 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GraphQl\DeleteMutation;
 use ApiPlatform\Metadata\GraphQl\Query;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
+use App\ApiPlatform\State\UserProviderDecorator;
 use App\Domain\ValueObject\UserLogin;
+use App\DTO\UserDTO;
 use App\Repository\UserRepository;
 use App\Resolver\UserCollectionResolver;
 use App\Resolver\UserResolver;
@@ -25,23 +27,27 @@ use JMS\Serializer\Annotation as JMS;
 
 #[ORM\Table(name: '`user`')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource(graphQlOperations: [
-    new Query(),
-    new QueryCollection(),
-    new QueryCollection(
-        resolver: UserCollectionResolver::class,
-        name: 'collectionQuery',
-    ),
-    new Query(
-        resolver: UserResolver::class,
-        args: [
-            'id' => ['type' => 'Int'],
-            'login' => ['type' => 'String'],
-        ],
-        read: false,
-        name: 'itemQuery',
-    )
-])]
+#[ApiResource(
+    output: UserDTO::class,
+    graphQlOperations: [
+        new Query(),
+        new QueryCollection(),
+        new QueryCollection(
+            resolver: UserCollectionResolver::class,
+            name: 'collectionQuery',
+        ),
+        new Query(
+            resolver: UserResolver::class,
+            args: [
+                'id' => ['type' => 'Int'],
+                'login' => ['type' => 'String'],
+            ],
+            read: false,
+            name: 'itemQuery',
+        )
+    ],
+    provider: UserProviderDecorator::class
+)]
 #[ApiFilter(SearchFilter::class, properties: ['login' => 'partial'])]
 #[ApiFilter(OrderFilter::class, properties: ['login'])]
 class User implements HasMetaTimestampsInterface, UserInterface, PasswordAuthenticatedUserInterface
@@ -119,11 +125,16 @@ class User implements HasMetaTimestampsInterface, UserInterface, PasswordAuthent
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $isProtected;
 
+    #[ORM\OneToMany(mappedBy: 'follower', targetEntity: 'Subscription')]
+    private Collection $followed;
+
+
     public function __construct()
     {
         $this->tweets = new ArrayCollection();
         $this->authors = new ArrayCollection();
         $this->followers = new ArrayCollection();
+        $this->followed = new ArrayCollection();
         $this->subscriptionAuthors = new ArrayCollection();
         $this->subscriptionFollowers = new ArrayCollection();
     }
@@ -373,5 +384,13 @@ class User implements HasMetaTimestampsInterface, UserInterface, PasswordAuthent
     public function setIsProtected(bool $isProtected): void
     {
         $this->isProtected = $isProtected;
+    }
+
+    /**
+     * @return Subscription[]
+     */
+    public function getFollowed(): array
+    {
+        return $this->followed->getValues();
     }
 }
