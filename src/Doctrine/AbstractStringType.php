@@ -34,6 +34,10 @@ abstract class AbstractStringType extends Type
             return null;
         }
 
+        if (is_string($value)) {
+            return $value;
+        }
+
         if ($value instanceof AbstractValueObjectString) {
             return $value->getValue();
         }
