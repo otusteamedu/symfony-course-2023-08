@@ -141,3 +141,8 @@ services:
     App\Manager\UserManager:
         arguments:
             $finder: '@fos_elastica.finder.user'
+
+    App\ApiPlatform\State\AsyncMessageTweetProcessorDecorator:
+        bind:
+            $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
+            $removeProcessor: '@api_platform.doctrine.orm.state.remove_processor'
