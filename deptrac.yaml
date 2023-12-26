@@ -1,0 +1,26 @@
+parameters:
+    paths:
+        - ./src
+    exclude_files: []
+    layers:
+        - name: Controller
+          collectors:
+              - type: className
+                regex: ^App\\Controller\\GetFeed\\.*
+        - name: Domain
+          collectors:
+              - type: className
+                regex: ^App\\Domain\\.*
+        - name: Service
+          collectors:
+              - type: className
+                regex: ^App\\Service\\.*
+              - type: className
+                regex: ^FeedBundle\\Service\\.*
+    ruleset:
+        Controller:
+            - Domain
+            - Service
+        Domain:
+        Service:
+            - Domain
