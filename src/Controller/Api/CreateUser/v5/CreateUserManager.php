@@ -4,6 +4,7 @@ namespace App\Controller\Api\CreateUser\v5;
 
 use App\Controller\Api\CreateUser\v5\Input\CreateUserDTO;
 use App\Controller\Api\CreateUser\v5\Output\UserIsCreatedDTO;
+use App\Domain\ValueObject\UserLogin;
 use App\Entity\User;
 use App\Event\CreateUserEvent;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,14 +29,14 @@ class CreateUserManager implements CreateUserManagerInterface
     {
         $this->statsdAPIClient->increment('save_user_v5_attempt');
         $user = new User();
-        $user->setLogin($saveUserDTO->login);
+        $user->setLogin(UserLogin::fromString($saveUserDTO->login));
         $user->setPassword($this->userPasswordHasher->hashPassword($user, $saveUserDTO->password));
         $user->setRoles($saveUserDTO->roles);
         $user->setAge($saveUserDTO->age);
         $user->setIsActive($saveUserDTO->isActive);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-        $this->eventDispatcher->dispatch(new CreateUserEvent($user->getLogin()));
+        $this->eventDispatcher->dispatch(new CreateUserEvent($user->getLogin()->getValue()));
 
         $result = new UserIsCreatedDTO();
         $context = (new SerializationContext())->setGroups(['video-user-info', 'user-id-list']);
