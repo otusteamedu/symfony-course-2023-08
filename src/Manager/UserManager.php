@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use App\Domain\ValueObject\UserLogin;
 use App\DTO\ManageUserDTO;
 use App\Entity\User;
 use App\Repository\UserRepository;
@@ -217,7 +218,7 @@ class UserManager
 
     public function saveUserFromDTO(User $user, ManageUserDTO $manageUserDTO): ?int
     {
-        $user->setLogin($manageUserDTO->login);
+        $user->setLogin(UserLogin::fromString($manageUserDTO->login));
         $user->setPassword($this->userPasswordHasher->hashPassword($user, $manageUserDTO->password));
         $user->setAge($manageUserDTO->age);
         $user->setIsActive($manageUserDTO->isActive);
