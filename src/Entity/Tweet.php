@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
+use App\ApiPlatform\State\AsyncMessageTweetProcessorDecorator;
 use App\Repository\TweetRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,6 +16,9 @@ use JMS\Serializer\Annotation as JMS;
 #[ORM\Table(name: 'tweet')]
 #[ORM\Index(columns: ['author_id'], name: 'tweet__author_id__ind')]
 #[ORM\Entity(repositoryClass: TweetRepository::class)]
+#[ApiResource(
+    operations: [new Post(status: 202, processor: AsyncMessageTweetProcessorDecorator::class)], output: false
+)]
 class Tweet
 {
     #[ORM\Column(name: 'id', type: 'bigint', unique: true)]
